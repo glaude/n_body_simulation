@@ -1,5 +1,7 @@
 """
 Pull requests before committing to main branch!
+
+Do not attempt to execute if loop() is empty!
 """
 import ListMethods as method
 import MDUtilities as md
@@ -17,8 +19,8 @@ def main(): #
     :return:
     """
     # Setup of lists, parameters, etc. etc.
-    listObjects = []
-    listNumber = []
+    listObjects = [] # Contains list of Particle3D instances
+    listNumber = [] # Particle3D instance behaviour over time.
     nParticles = int(raw_input("Input number of particles: "))
     file_name = raw_input("Name of parameters file: ") # Parameters.txt
     file_handle = open(file_name, "r")
@@ -33,7 +35,7 @@ def main(): #
                        p_1.velocity[2], p_1.mass))
 
     # Box dimension
-    box = md.setInitialPositions(density, listObjects)
+    box = md.setInitialPositions(density, listObjects) # Generates box dimension
     # Set initial positions and velocity
     md.setInitialPositions(density, listObjects)
     md.setInitialVelocities(temp, listObjects)
