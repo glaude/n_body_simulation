@@ -19,14 +19,6 @@ So best to split the project into 2 phases, with phase 1 being the above. Then p
 
 *** = Methods we can use to ensure that the simulation is running correctly, of course apart from visual tracking of particles.
 """
-def force_sum(listObjects):
-    forces = []
-    r_cut = 3.0
-    for i in range(len(listObjects)):
-        for j in range(len(listObjects)):
-            if i != j:
-                forces.append(Particle3D.inter_force(r_cut, listObjects[i], listObjects[j]))
-    return  sum(forces)
 
 def traj_output(outfile, listObjects):
     for j in range(len(listObjects)):
