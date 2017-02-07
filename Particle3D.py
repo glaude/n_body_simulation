@@ -107,7 +107,7 @@ class Particle3D(object):
         vect_mag = np.linalg.norm(Particle3D.vector_split(p_1, p_2))
         if vect_mag <= r_cut:
             force = np.multiply(48 * ((1 / (vect_mag ** 14)) - 1 / (2 * vect_mag ** 8)),
-                                Particle3D.vector_split(p_1, p_2))
+                                Particle3D.vector_split(p_1, p_2)) # Edited a mistake. Changed the '+' to a '-'.
             return force
         else:
             force = 0
