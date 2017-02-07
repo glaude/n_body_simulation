@@ -23,3 +23,15 @@ So best to split the project into 2 phases, with phase 1 being the above. Then p
 def traj_output(outfile, listObjects):
     for j in range(len(listObjects)):
         outfile.write("{}\n".format(Particle3D.__str__(listObjects[j])))
+
+def force_sum(listObjects, r_cut): # Issue: 3rd particle not evaluated?
+    sum_forces = []
+    for i in range(len(listObjects)):
+        list_forces = []
+        for j in range(len(listObjects)):
+            if i != j:
+                list_forces.append(Particle3D.inter_force(r_cut, listObjects[i], listObjects[j]))
+            else:
+                list_forces.append(np.zeros(3))
+        sum_forces.append(sum(list_forces))
+    return sum_forces
