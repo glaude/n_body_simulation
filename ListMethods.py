@@ -24,14 +24,15 @@ def traj_output(outfile, listObjects):
     for j in range(len(listObjects)):
         outfile.write("{}\n".format(Particle3D.__str__(listObjects[j])))
 
-def force_sum(listObjects, r_cut): # Issue: 3rd particle not evaluated?
-    sum_forces = []
+def force_sum(listObjects, r_cut): 
+    sum_forces = [] # Contains list of force experienced by each particle in listObjects.
     for i in range(len(listObjects)):
-        list_forces = []
+        list_forces = [] # Pair forces stored here.
         for j in range(len(listObjects)):
             if i != j:
                 list_forces.append(Particle3D.inter_force(r_cut, listObjects[i], listObjects[j]))
             else:
                 list_forces.append(np.zeros(3))
-        sum_forces.append(sum(list_forces))
+        sum_forces.append(sum(list_forces)) # sum(list_forces) is the amount of force experienced by 1 particle. 
+                                            # This calculation is repeated over listObjects.
     return sum_forces
