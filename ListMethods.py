@@ -78,6 +78,9 @@ def pbc(listObjects, boxSide, rangeParticles):
     :param rangeParticles: a 'range' over nParticles
     """
     for m in rangeParticles:
+        """
+        How it works: np.putmask('what you want to be updated', 'condition for update', 'the update operation')
+        """
         pos = listObjects[m].position
         np.putmask(pos, pos > boxSide, pos - boxSide)
         np.putmask(pos, pos < 0, pos + boxSide)
