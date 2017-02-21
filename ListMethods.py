@@ -67,3 +67,17 @@ def force_sum(listObjects, r_cut):
         sum_forces.append(sum(list_forces)) # sum(list_forces) is the amount of force experienced by 1 particle. 
                                             # This calculation is repeated over listObjects.
     return sum_forces
+
+
+def pbc(listObjects, boxSide, rangeParticles):
+    """
+    I just had to. Browsing through numpy documentation and saw this amazing method called putmask.
+    This method subjects particle positions to periodic boundary conditions.
+    :param listObjects: list of Particle3D instances.
+    :param boxSide: Length of simulation box.
+    :param rangeParticles: a 'range' over nParticles
+    """
+    for m in rangeParticles:
+        pos = listObjects[m].position
+        np.putmask(pos, pos > boxSide, pos - boxSide)
+        np.putmask(pos, pos < 0, pos + boxSide)
