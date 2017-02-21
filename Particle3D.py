@@ -99,7 +99,8 @@ class Particle3D(object):
         :param p_2: Another particle 3D instance.
         :return: The relative vector separation between 2 Particle3D instances.
         """
-        vector_separation = p_1.position - p_2.position # changed from p_2.position - p_1.position
+        vector_separation = p_1.position - p_2.position 
+
         return vector_separation
 
     @staticmethod
@@ -110,7 +111,8 @@ class Particle3D(object):
                                 Particle3D.vector_split(p_1, p_2)) # Edited a mistake. Changed the '+' to a '-'.
             return force
         else:
-            force = np.zeros(3) # changed from 0 to np.zeros(3)
+            force = np.zeros(3) 
+
             return force
 
     @staticmethod
