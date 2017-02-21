@@ -49,12 +49,19 @@ def msd(finalPos, initPos, rangeParticles):
     return msd
 
 def force_sum(listObjects, r_cut): 
+    """
+    The method currently does not take into account minimum image convention.
+    I will need the minimum image convention method to update this.
+    Lastly, if you are ok with making the new method regarding pair distances calculations,
+    this can be significantly shortened.
+    """
     sum_forces = [] # Contains list of force experienced by each particle in listObjects.
     for i in range(len(listObjects)):
         list_forces = [] # Pair forces stored here.
         for j in range(len(listObjects)):
             if i != j:
-                list_forces.append(Particle3D.inter_force(r_cut, listObjects[i], listObjects[j]))
+                separation = Particle3D.vector_split(listObjects[i], listObjects[j]) # Needed by pair_force as an argument.
+                list_forces.append(Particle3D.pair_force(r_cut, separation)) # As above.
             else:
                 list_forces.append(np.zeros(3))
         sum_forces.append(sum(list_forces)) # sum(list_forces) is the amount of force experienced by 1 particle. 
