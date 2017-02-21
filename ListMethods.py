@@ -23,6 +23,30 @@ So best to split the project into 2 phases, with phase 1 being the above. Then p
 def traj_output(outfile, listObjects):
     for j in range(len(listObjects)):
         outfile.write("{}\n".format(Particle3D.__str__(listObjects[j])))
+        
+def all_pos(listObjects, rangeParticles):
+    """
+    Stores the positions of all Particle3D instances in an array for mean square displacement calculations.
+    :param listObjects: list containing Particle3D instances
+    :param rangeParticles: The 'range' of the number of Particle3D instances
+    :return: Returns an array of positions of all Particle3D instances.
+    """
+    allPos = np.array([listObjects[i].position for i in rangeParticles])
+    return allPos
+
+def msd(finalPos, initPos, rangeParticles):
+    """
+    Calculates the mean square displacement of all particles at time t
+    :param finalPos: Position of all Particle3D instances at time t
+    :param initPos: Initial position of all Particle3D instances (ie. at t = 0)
+    :param rangeParticles:
+    :return: Returns the mean square displacement at time t.
+    """
+    posVar = finalPos - initPos
+    x = len(rangeParticles)
+    posVarSq = [np.linalg.norm(posVar[i]) ** 2 for i in rangeParticles]
+    msd = sum(posVarSq) / x
+    return msd
 
 def force_sum(listObjects, r_cut): 
     sum_forces = [] # Contains list of force experienced by each particle in listObjects.
