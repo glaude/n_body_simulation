@@ -112,3 +112,15 @@ class Particle3D(object):
         else:
             force = np.zeros(3)
             return force
+
+    @staticmethod
+    def pair_force(r_cut, separation):
+        """ This will be the new method to use to calculate pair forces. It is actually similar to inter_force,
+        just that it now takes a separation vector as an argument instead of 2 particles.
+        """
+        vect_mag = np.linalg.norm(separation)
+        if vect_mag < r_cut:
+            force = np.multiply(48 * ((1 / (vect_mag ** 14)) - (1 / (2 * vect_mag ** 8))), separation) 
+            return force
+        else:
+            return np.zeros(3)
