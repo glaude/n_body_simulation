@@ -36,15 +36,6 @@ class Particle3D(object):
         """
         return 0.5 * self.mass * (np.linalg.norm(self.velocity) ** 2)
 
-    #  Potential Energy
-    def potential_energy(self):
-        """
-        Calculates potential energy of a particle.
-        :return: Potential energy value.
-        """
-        G = 1  # As defined in exercise 3, section 2.2.
-        return G * self.mass * (-1 / np.linalg.norm(self.position))
-
     # Time integration methods
     def leap_velocity(self, dt, force):
         """
@@ -99,30 +90,22 @@ class Particle3D(object):
         :param p_2: Another particle 3D instance.
         :return: The relative vector separation between 2 Particle3D instances.
         """
-        vector_separation = p_1.position - p_2.position 
-
+        vector_separation = p_1.position - p_2.position
         return vector_separation
 
     @staticmethod
-    def inter_force(r_cut, p_1, p_2):
-        vect_mag = np.linalg.norm(Particle3D.vector_split(p_1, p_2))
-        if vect_mag <= r_cut:
-            force = np.multiply(48 * ((1 / (vect_mag ** 14)) - 1 / (2 * vect_mag ** 8)),
-                                Particle3D.vector_split(p_1, p_2)) # Edited a mistake. Changed the '+' to a '-'.
-            return force
-        else:
-            force = np.zeros(3) 
+    def inter_force(separation):
+        vect_mag = np.linalg.norm(separation)
+        force = np.multiply(48 * ((1 / (vect_mag ** 14)) - (1 / (2 * vect_mag ** 8))), separation) # Edited a mistake. Changed the '+' to a '-'.
+        return force
 
-            return force
 
+    
     @staticmethod
-    def pair_force(r_cut, separation):
-        """ This will be the new method to use to calculate pair forces. It is actually similar to inter_force,
-        just that it now takes a separation vector as an argument instead of 2 particles.
-        """
+    def potential_energy(r_cut, separation):
         vect_mag = np.linalg.norm(separation)
         if vect_mag < r_cut:
-            force = np.multiply(48 * ((1 / (vect_mag ** 14)) - (1 / (2 * vect_mag ** 8))), separation) 
-            return force
+            pEnergy = 4 * (1/(vect_mag ** 12) - 1/(vect_mag **6))
+            return pEnergy
         else:
-            return np.zeros(3)
+            return 0
