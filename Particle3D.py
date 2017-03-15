@@ -60,26 +60,6 @@ class Particle3D(object):
         """
         self.position = self.position + (dt * self.velocity) + (0.5 * (dt ** 2) * (force / self.mass))
 
-    # Parameter Reader
-    @staticmethod
-    def parameter_reader(file_handle):
-        """
-        Static method which generates a Particle3D instance from file input.
-        :param file_handle:
-        :return: Label, position, velocity vectors and particle mass values read from file input.
-        """
-        output = file_handle.readline()
-        tokens = output.split()
-        label = str(tokens[0])
-        x_pos = float(tokens[1])
-        y_pos = float(tokens[2])
-        z_pos = float(tokens[3])
-        vel_x = float(tokens[4])
-        vel_y = float(tokens[5])
-        vel_z = float(tokens[6])
-        mass_part = float(tokens[7])
-
-        return Particle3D(label, x_pos, y_pos, z_pos, vel_x, vel_y, vel_z, mass_part)
 
     # Vector Separation
     @staticmethod
@@ -94,9 +74,9 @@ class Particle3D(object):
         return vector_separation
 
     @staticmethod
-    def inter_force(separation):
-        vect_mag = np.linalg.norm(separation)
-        force = np.multiply(48 * ((1 / (vect_mag ** 14)) - (1 / (2 * vect_mag ** 8))), separation) # Edited a mistake. Changed the '+' to a '-'.
+    def inter_force(separation, sepMag):
+        #vect_mag = np.linalg.norm(separation)
+        force = np.multiply(48 * ((1 / (sepMag ** 14)) - (1 / (2 * sepMag ** 8))), separation) # Edited a mistake. Changed the '+' to a '-'.
         return force
 
 
