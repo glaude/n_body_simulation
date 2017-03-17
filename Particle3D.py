@@ -27,7 +27,7 @@ class Particle3D(object):
         Provides output of 3D particle parameters as a string
         :return: String output of position and mass of particle.
         """
-        return ("{} {} {} {}".format(self.label, self.position[0], self.position[1], self.position[2]))
+        return ("{0} {1:.5f} {2:.5f} {3:.5f}".format(self.label, self.position[0], self.position[1], self.position[2]))
 
     def kinetic_energy(self):
         """
@@ -60,7 +60,44 @@ class Particle3D(object):
         """
         self.position = self.position + (dt * self.velocity) + (0.5 * (dt ** 2) * (force / self.mass))
 
-    # Parameter Reader
+
+    # Vector Separation
+    @staticmethod
+    def vector_split(p_1, p_2):
+        """
+        Static method which calculates the vector separation between two particles.
+        :param p_1: Particle 3D instance
+        :param p_2: Another particle 3D instance.
+        :return: The relative vector separation between 2 Particle3D instances.
+        """
+        vector_separation = p_1.position - p_2.position
+        return vector_separation
+
+    @staticmethod
+    def inter_force(separation, sepMag):
+        """
+        Static method which calculates the force between two particles.
+        :param separation: separation vector between two particles.
+        :param sepMag: magnitude of separation vector.
+        :return: force vector between two particles.
+        """
+        force = np.multiply(48 * ((1 / (sepMag ** 14)) - (1 / (2 * sepMag ** 8))), separation)
+        return force
+    
+    @staticmethod
+    def potential_energy(r_cut, sepMag):
+        """
+        Static method which calculates the potential energy between two particles.
+        :param r_cut: Cutoff radius
+        :param sepMag: separation vector magnitude
+        :return: Potential energy if the separation vector magnitude is below r_cut, otherwise 'zero'.
+        """
+        if sepMag < r_cut:
+            pEnergy = 4 * (1/(sepMag ** 12) - 1/(sepMag **6))
+            return pEnergy
+        else:
+            return 0
+
     @staticmethod
     def parameter_reader(file_handle):
         """
@@ -80,32 +117,3 @@ class Particle3D(object):
         mass_part = float(tokens[7])
 
         return Particle3D(label, x_pos, y_pos, z_pos, vel_x, vel_y, vel_z, mass_part)
-
-    # Vector Separation
-    @staticmethod
-    def vector_split(p_1, p_2):
-        """
-        Calculates the vector separation between two particles.
-        :param p_1: Particle 3D instance
-        :param p_2: Another particle 3D instance.
-        :return: The relative vector separation between 2 Particle3D instances.
-        """
-        vector_separation = p_1.position - p_2.position
-        return vector_separation
-
-    @staticmethod
-    def inter_force(separation):
-        vect_mag = np.linalg.norm(separation)
-        force = np.multiply(48 * ((1 / (vect_mag ** 14)) - (1 / (2 * vect_mag ** 8))), separation) # Edited a mistake. Changed the '+' to a '-'.
-        return force
-
-
-    
-    @staticmethod
-    def potential_energy(r_cut, separation):
-        vect_mag = np.linalg.norm(separation)
-        if vect_mag < r_cut:
-            pEnergy = 4 * (1/(vect_mag ** 12) - 1/(vect_mag **6))
-            return pEnergy
-        else:
-            return 0
